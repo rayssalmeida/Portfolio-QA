@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookHub - Sua Livraria Online</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Bug 1: Header sem role="banner" para acessibilidade -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>Book<span>Hub</span></h1>
+                <p class="tagline">Sua livraria online</p>
+            </div>
+            
+            <!-- Bug 2: Campo de busca sem label -->
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Buscar livros...">
+                <button id="searchBtn"><i class="fas fa-search"></i></button>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="#home">Início</a></li>
+                    <li><a href="#catalog">Catálogo</a></li>
+                    <!-- Bug 3: Link do carrinho não atualiza contador -->
+                    <li><a href="#cart" id="cartLink">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="cartCount">0</span>
+                    </a></li>
+                    <li><a href="#login" id="loginLink">Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Modal de Login (Bug 4: Modal não fecha com ESC) -->
+        <div id="loginModal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Login</h2>
+                <form id="loginForm">
+                    <!-- Bug 5: Campo email aceita qualquer formato -->
+                    <div class="form-group">
+                        <input type="text" id="email" placeholder="E-mail" required>
+                    </div>
+                    
+                    <!-- Bug 6: Senha não tem limite mínimo -->
+                    <div class="form-group">
+                        <input type="password" id="password" placeholder="Senha" required>
+                    </div>
+                    
+                    <!-- Bug 7: Botão submit sem tipo definido -->
+                    <button id="loginSubmit">Entrar</button>
+                </form>
+                <p class="error-message hidden" id="loginError"></p>
+            </div>
+        </div>
+
+        <section id="featured">
+            <h2>Livros em Destaque</h2>
+            <div class="books-grid" id="featuredBooks">
+                <!-- Livros serão carregados via JavaScript -->
+            </div>
+        </section>
+
+        <section id="catalog">
+            <h2>Catálogo Completo</h2>
+            
+            <!-- Bug 8: Filtro não funciona em mobile -->
+            <div class="filters">
+                <select id="genreFilter">
+                    <option value="">Todos os gêneros</option>
+                    <option value="ficcao">Ficção</option>
+                    <option value="tecnologia">Tecnologia</option>
+                    <option value="biografia">Biografia</option>
+                </select>
+                
+                <!-- Bug 9: Input de preço sem validação -->
+                <div class="price-filter">
+                    <label>Preço máximo: R$</label>
+                    <input type="number" id="maxPrice" min="0" value="100">
+                </div>
+            </div>
+
+            <div class="books-grid" id="catalogBooks">
+                <!-- Catálogo será carregado via JS -->
+            </div>
+            
+            <!-- Bug 10: Paginação quebrada na página 2 -->
+            <div class="pagination">
+                <button id="prevPage" disabled>Anterior</button>
+                <span id="currentPage">1</span>
+                <button id="nextPage">Próxima</button>
+            </div>
+        </section>
+
+        <!-- Carrinho (Bug 11: Não é responsivo) -->
+        <aside id="cartSidebar" class="hidden">
+            <h3>Seu Carrinho</h3>
+            <div id="cartItems">
+                <p class="empty-cart">Carrinho vazio</p>
+            </div>
+            <div class="cart-total">
+                <p>Total: R$ <span id="cartTotal">0.00</span></p>
+                <!-- Bug 12: Checkout não valida carrinho vazio -->
+                <button id="checkoutBtn">Finalizar Compra</button>
+            </div>
+        </aside>
+    </main>
+
+    <!-- Bug 13: Footer com link quebrado -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 BookHub. Todos os direitos reservados.</p>
+            <p><a href="/politica-privacidade">Política de Privacidade</a> | 
+               <a href="/termos">Termos de Uso</a> | 
+               <a href="#contact">Contato</a></p>
+            <!-- Bug 14: Link de contato sem href válido -->
+            <p>Email: <a>contato@bookhub.com</a></p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
