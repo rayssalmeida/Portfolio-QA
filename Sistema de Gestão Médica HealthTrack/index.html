@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthTrack Plus | Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <nav id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-heartbeat"></i> HealthTrack</h2>
+            <p class="version">v2.1.3</p>
+        </div>
+        
+        <!-- Bug 1: Menu sem estado ativo visível -->
+        <ul class="sidebar-menu">
+            <li><a href="#dashboard" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="#agendamentos"><i class="fas fa-calendar-check"></i> Agendamentos</a></li>
+            <li><a href="#pacientes"><i class="fas fa-user-injured"></i> Pacientes</a></li>
+            <li><a href="#medicos"><i class="fas fa-user-md"></i> Médicos</a></li>
+            <li><a href="#prontuarios"><i class="fas fa-file-medical"></i> Prontuários</a></li>
+            <li><a href="#financeiro"><i class="fas fa-money-bill-wave"></i> Financeiro</a></li>
+            <li><a href="#configuracoes"><i class="fas fa-cog"></i> Configurações</a></li>
+        </ul>
+        
+        <!-- Bug 2: Usuário logado sem role adequado -->
+        <div class="user-profile">
+            <img src="https://via.placeholder.com/40" alt="Usuário">
+            <div>
+                <p class="user-name">Dr. Carlos Silva</p>
+                <p class="user-role">Administrador</p>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <header class="top-bar">
+            <div class="search-container">
+                <!-- Bug 3: Search sem autocomplete="off" -->
+                <input type="text" id="globalSearch" placeholder="Buscar pacientes, agendamentos...">
+                <button id="searchBtn"><i class="fas fa-search"></i></button>
+            </div>
+            
+            <div class="top-bar-actions">
+                <!-- Bug 4: Notificações sem contador acessível -->
+                <button class="notification-btn" aria-label="Notificações">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-count">3</span>
+                </button>
+                
+                <!-- Bug 5: Datepicker customizado sem validação -->
+                <div class="date-picker">
+                    <input type="text" id="dateFilter" placeholder="dd/mm/aaaa">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                
+                <button id="newAppointment" class="btn-primary">
+                    <i class="fas fa-plus"></i> Novo Agendamento
+                </button>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="content-area">
+            <!-- Stats Cards -->
+            <section class="stats-cards">
+                <div class="card stat-card">
+                    <div class="card-header">
+                        <h3>Agendamentos Hoje</h3>
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+                    <div class="card-body">
+                        <p class="stat-number" id="todayAppointments">12</p>
+                        <p class="stat-change">+2 em relação a ontem</p>
+                    </div>
+                    <!-- Bug 6: Tooltip que some rápido -->
+                    <div class="card-tooltip">Última atualização: 10:30</div>
+                </div>
+                
+                <div class="card stat-card">
+                    <div class="card-header">
+                        <h3>Pacientes Ativos</h3>
+                        <i class="fas fa-user-injured"></i>
+                    </div>
+                    <div class="card-body">
+                        <p class="stat-number" id="activePatients">245</p>
+                        <p class="stat-change">15 novos este mês</p>
+                    </div>
+                </div>
+                
+                <!-- Bug 7: Card de receita com cálculo incorreto -->
+                <div class="card stat-card">
+                    <div class="card-header">
+                        <h3>Receita do Mês</h3>
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="card-body">
+                        <p class="stat-number" id="monthlyRevenue">R$ 45.230,00</p>
+                        <p class="stat-change">-5% em relação ao mês anterior</p>
+                    </div>
+                </div>
+                
+                <div class="card stat-card">
+                    <div class="card-header">
+                        <h3>Taxa de Ocupação</h3>
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="card-body">
+                        <p class="stat-number" id="occupancyRate">78%</p>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 78%"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Main Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Calendar Widget -->
+                <div class="card grid-col-2">
+                    <div class="card-header">
+                        <h3>Calendário de Agendamentos</h3>
+                        <div class="view-options">
+                            <button class="view-btn active">Mês</button>
+                            <button class="view-btn">Semana</button>
+                            <button class="view-btn">Dia</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Bug 8: FullCalendar com timezone errado -->
+                        <div id="calendar"></div>
+                    </div>
+                </div>
+
+                <!-- Recent Appointments -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Próximas Consultas</h3>
+                        <a href="#agendamentos" class="view-all">Ver todos</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="appointments-list" id="upcomingAppointments">
+                            <!-- Lista carregada via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Patient Registration Form -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Cadastro Rápido de Paciente</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="quickPatientForm">
+                            <!-- Bug 9: Form sem fieldset/legend -->
+                            <div class="form-group">
+                                <input type="text" id="patientName" placeholder="Nome completo" required>
+                            </div>
+                            
+                            <!-- Bug 10: CPF sem máscara e validação -->
+                            <div class="form-group">
+                                <input type="text" id="patientCPF" placeholder="CPF" maxlength="14">
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <!-- Bug 11: Telefone aceita letras -->
+                                    <input type="text" id="patientPhone" placeholder="Telefone">
+                                </div>
+                                <div class="form-group">
+                                    <input type="date" id="patientBirthDate">
+                                </div>
+                            </div>
+                            
+                            <!-- Bug 12: Email não obrigatório mas sistema precisa -->
+                            <div class="form-group">
+                                <input type="email" id="patientEmail" placeholder="E-mail">
+                            </div>
+                            
+                            <button type="submit" class="btn-primary full-width">
+                                <i class="fas fa-save"></i> Cadastrar
+                            </button>
+                        </form>
+                        <p class="form-error hidden" id="patientFormError"></p>
+                    </div>
+                </div>
+
+                <!-- System Alerts -->
+                <div class="card grid-col-2">
+                    <div class="card-header">
+                        <h3><i class="fas fa-exclamation-triangle"></i> Alertas do Sistema</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="alerts-container">
+                            <!-- Bug 13: Alertas sem prioridade visual -->
+                            <div class="alert alert-warning">
+                                <p>Sincronização com TASY pendente</p>
+                                <span class="alert-time">Há 2 dias</span>
+                            </div>
+                            <div class="alert alert-error">
+                                <!-- Bug 14: Mensagem de erro genérica -->
+                                <p>Erro ao processar faturamento</p>
+                                <span class="alert-time">Hoje 09:15</span>
+                            </div>
+                            <div class="alert alert-info">
+                                <p>Backup automático realizado</p>
+                                <span class="alert-time">Ontem 23:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal for New Appointment -->
+    <div id="appointmentModal" class="modal hidden">
+        <div class="modal-content large-modal">
+            <!-- Modal content loaded via JS -->
+        </div>
+    </div>
+
+    <!-- Session Timeout Warning -->
+    <!-- Bug 15: Timeout não respeita inatividade real -->
+    <div id="sessionWarning" class="session-warning hidden">
+        <p>Sua sessão expirará em <span id="sessionTimer">05:00</span></p>
+        <button id="extendSession">Manter conectado</button>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+        <p>Processando sua solicitação...</p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/locale/pt-br.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/calendar.js"></script>
+</body>
+</html>
